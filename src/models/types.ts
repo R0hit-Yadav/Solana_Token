@@ -1,0 +1,1 @@
+export type EndpointType = 'mainnet' | 'devnet' | 'localnet';
