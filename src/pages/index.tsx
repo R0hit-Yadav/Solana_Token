@@ -30,14 +30,14 @@ const Home: NextPage = (props) =>
         setOpenSendTransaction={setOpenSendTransaction}
         setOpenTokenMetaData={setOpenTokenMetaData}/>
 
-      {/*<FeaturesView
+     <FeaturesView
       setOpenAirdrop={setOpenAirdrop}
         setOpenContact={setOpenContact}
         setOpenCreateModal={setOpenCreateModal}
         setOpenSendTransaction={setOpenSendTransaction}
         setOpenTokenMetaData={setOpenTokenMetaData}/>
 
-      <OfferView />
+       {/*<OfferView />
       <FaqView />
 
       {openCreateModal && <div className="new_loader realtive h-full bg-slate-900">
