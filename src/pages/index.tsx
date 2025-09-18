@@ -37,10 +37,10 @@ const Home: NextPage = (props) =>
         setOpenSendTransaction={setOpenSendTransaction}
         setOpenTokenMetaData={setOpenTokenMetaData}/>
 
-       {/*<OfferView />
+       <OfferView />
       <FaqView />
 
-      {openCreateModal && <div className="new_loader realtive h-full bg-slate-900">
+      {/*{openCreateModal && <div className="new_loader realtive h-full bg-slate-900">
           <CreateView setOpenCreateModal={setOpenCreateModal} />
         </div>
       }
