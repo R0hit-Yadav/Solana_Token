@@ -73,7 +73,10 @@ return (
                   <p className="text-default-300 mb-2 text-sm- font-medium">
                     {question.answer}
                   </p>
-                  <p className="text-default-300"></p>
+                  <p className="text-default-300 text-sm font-medium">
+                    Have you ever wanted to become blockchain developer 
+                    check the pro NFT MarketPlace cource
+                  </p>
                 </div>
               </div>
             </div>
