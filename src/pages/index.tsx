@@ -23,7 +23,7 @@ const Home: NextPage = (props) =>
       </Head>
 
       <HomeView setOpenCreateModal={setOpenCreateModal} />
-       <ToolView 
+       <ToolView  
         setOpenAirdrop={setOpenAirdrop}
         setOpenContact={setOpenContact}
         setOpenCreateModal={setOpenCreateModal}
