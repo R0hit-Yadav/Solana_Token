@@ -11,10 +11,14 @@ import Branding from "../../components/Branding";
 import { set } from "immer/dist/internal";
 
 
-export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
+interface TokenMetadataProps {
+  setOpenTokenMetadata: (open: boolean) => void;
+}
+
+export const TokenMetadata: FC<TokenMetadataProps> = ({setOpenTokenMetadata})=> {
   const { connection } = useConnection();
   const [tokenAddress,setTokenAddress] = useState("");
-  const [TokenMetadata,setTokenMetadata] = useState("");
+  const [TokenMetadata, setTokenMetadata] = useState<any>(null);
   const [logo, setLogo] = useState(null);
   const [loaded,setLoaded] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
@@ -23,7 +27,7 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
     setIsLoading(true);
 
     try {
-      const tokenMint= new PublicKey(from);
+      const tokenMint= new PublicKey(form);
       const metadataPDA = PublicKey.findProgramAddressSync(
         [Buffer.from("metadata"), PROGRAM_ID.toBuffer(), tokenMint.toBuffer()],PROGRAM_ID
       )[0];
@@ -35,7 +39,7 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
       let logoJson = await logoRes.json();
       let {image} = logoJson;
 
-      setTokenMetadata({tokenMetadata ,...metadata.data});
+      setTokenMetadata(metadata.data);
       setLogo(image);
       setIsLoading(false);
       setLoaded(true);
@@ -49,19 +53,19 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
     }
   },[tokenAddress])
 
-  const CloseModel = () => {
-    <a
-    onClick={()=> setOpenTokenMetadata(false)}
-    className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
-    backdrop-blur-2xl resation-all duration-500
-    hover:bg-blye-600/60" 
-    >
-      <i className="text-2xl text-white gorup-hover:text-white">
-        <AiOutlineClose/>
-      </i>
-
-    </a>
-  }
+  const CloseModel = () => (
+        <a
+          onClick={() => setOpenTokenMetadata(false)}
+          className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
+          backdrop-blur-2xl resation-all duration-500
+          hover:bg-blye-600/60"
+          style={{ cursor: 'pointer' }}
+        >
+          <i className="text-2xl text-white gorup-hover:text-white">
+            <AiOutlineClose />
+          </i>
+        </a>
+      );
 
   return (
      <>
@@ -137,15 +141,15 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
                   <div className="mt-5 w-full text-center">
                     <p className="text-default-300 text-base font-medium leading-6">
                       </p>
-                      <InputView name={"Token Address"} placeholder = {tokenMetadata?.name}></InputView>
+                      <InputView name={"Token Address"} placeholder = {TokenMetadata?.name}></InputView>
 
-                      <InputView name={"Symbol"} placeholder = {tokenMetadata?.symbol || "undefined"}></InputView>
+                      <InputView name={"Symbol"} placeholder = {TokenMetadata?.symbol || "undefined"}></InputView>
 
-                      <InputView name={"Token URI"} placeholder = {tokenMetadata?.uri}></InputView>
+                      <InputView name={"Token URI"} placeholder = {TokenMetadata?.uri}></InputView>
 
                     <div className="mb-6 text-center">
                       <a 
-                       href={tokenMetadata?.uri}
+                       href={TokenMetadata?.uri}
                        target="_blank"
                        rel="noreferrer"
                        className="bg-primary-600/90 hover:bg-primary-600 group mt-5

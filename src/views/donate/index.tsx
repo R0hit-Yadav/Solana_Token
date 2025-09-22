@@ -75,19 +75,19 @@ export const DonateView = ({setOpenSendTransaction}) => {
 
   },[publicKey, amount, sendTransaction, connection]);
 
-   const CloseModel = () => {
+  const CloseModel = () => (
         <a
-        onClick={()=> setOpenSendTransaction(false)}
-        className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
-        backdrop-blur-2xl resation-all duration-500
-        hover:bg-blye-600/60" 
+          onClick={() => setOpenSendTransaction(false)}
+          className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
+          backdrop-blur-2xl resation-all duration-500
+          hover:bg-blye-600/60"
+          style={{ cursor: 'pointer' }}
         >
           <i className="text-2xl text-white gorup-hover:text-white">
-            <AiOutlineClose/>
+            <AiOutlineClose />
           </i>
-    
         </a>
-      }
+      );
 
   return (
       <>

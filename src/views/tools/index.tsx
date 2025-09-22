@@ -3,7 +3,15 @@ import { MdGeneratingTokens } from "react-icons/md";
 import { IoIosArrowRoundForward} from "react-icons/io";
 import { LuArrowRightFromLine } from "react-icons/lu";
 
-export const ToolView: FC = ({
+interface ToolViewProps {
+  setOpenAirdrop: (open: boolean) => void;
+  setOpenContact: (open: boolean) => void;
+  setOpenCreateModal: (open: boolean) => void;
+  setOpenSendTransaction: (open: boolean) => void;
+  setOpenTokenMetaData: (open: boolean) => void;
+}
+
+export const ToolView: FC<ToolViewProps> = ({
   setOpenAirdrop,
   setOpenContact,
   setOpenCreateModal,

@@ -9,7 +9,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import Branding from "components/Branding";
 import { get } from "http";
 
-export const AirdropView: FC = ({setOpenAirdrop}) => {
+interface AirdropViewProps {
+  setOpenAirdrop: (open: boolean) => void;
+}
+
+export const AirdropView: FC<AirdropViewProps> = ({ setOpenAirdrop }) => {
   const wallet = useWallet();
   const { connection} = useConnection();
   const { publicKey} = useWallet();
@@ -63,19 +67,19 @@ export const AirdropView: FC = ({setOpenAirdrop}) => {
     }
   },[publicKey, connection, getUserSOLBalance]);
 
-    const CloseModel = () => {
+    const CloseModel: React.FC = () => (
       <a
-      onClick={()=> setOpenAirdrop(false)}
-      className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
-      backdrop-blur-2xl resation-all duration-500
-      hover:bg-blye-600/60" 
+        onClick={() => setOpenAirdrop(false)}
+        className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
+        backdrop-blur-2xl resation-all duration-500
+        hover:bg-blye-600/60"
+        style={{ cursor: "pointer" }}
       >
         <i className="text-2xl text-white gorup-hover:text-white">
-          <AiOutlineClose/>
+          <AiOutlineClose />
         </i>
-  
       </a>
-    }
+    );
 
     return(
       <>

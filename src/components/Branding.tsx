@@ -1,6 +1,12 @@
-import React,{FC} from "react";
+import React, { FC } from "react";
 
-const Branding: FC = ({image,title,message})=>
+interface BrandingProps {
+  image: string;
+  title: string;
+  message: string;
+}
+
+const Branding: FC<BrandingProps> = ({ image, title, message }) =>
 {
   return (
 

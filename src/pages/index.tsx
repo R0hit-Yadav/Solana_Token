@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 import { HomeView, ToolView, 
-  FeaturesView,OfferView,FaqView,CreateView,TokenMetadataView, 
+  FeatureView,OfferView,FaqView,CreateView,TokenMetadata, 
   ContactView, AirdropView, DonateView,
 } from "../views";
 
@@ -30,7 +30,7 @@ const Home: NextPage = (props) =>
         setOpenSendTransaction={setOpenSendTransaction}
         setOpenTokenMetaData={setOpenTokenMetaData}/>
 
-     <FeaturesView
+     <FeatureView
       setOpenAirdrop={setOpenAirdrop}
         setOpenContact={setOpenContact}
         setOpenCreateModal={setOpenCreateModal}
@@ -41,12 +41,12 @@ const Home: NextPage = (props) =>
       <FaqView />
 
     {openCreateModal && <div className="new_loader realtive h-full bg-slate-900">
-          <CreateView setOpenCreateModal={setOpenCreateModal} />
+          <CreateView setOpenCreateModel={setOpenCreateModal} />
         </div>
       }
 
        {openTokenMetaData && <div className="new_loader realtive h-full bg-slate-900">
-        <TokenMetadataView setOpenTokenMetaData={setOpenTokenMetaData} />
+        <TokenMetadata setOpenTokenMetadata={setOpenTokenMetaData} />
       </div>
       }
 

@@ -33,7 +33,11 @@ import CreateSVG from "../../components/SVG/CreateSVG";
 import Branding from "components/Branding";
 import { InputView } from "../index";
 
-export const CreateView: FC = ({ setOpenCreateModel}) => {
+interface CreateViewProps {
+  setOpenCreateModel: (open: boolean) => void;
+}
+
+export const CreateView: FC<CreateViewProps> = ({ setOpenCreateModel }) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction} = useWallet();
   const { networkConfiguration} = useNetworkConfiguration();
@@ -58,96 +62,96 @@ export const CreateView: FC = ({ setOpenCreateModel}) => {
 
   // CREATE TOKEN FUNCTION 
   const createToken = useCallback(async(token) => {
-    const lamports = await getMinimumBalanceForRentExemptMint(connection);
-    const mintKeypair = Keypair.generate();
-    const tokenATA = await getAssociatedTokenAddress(mintKeypair.publicKey, publicKey);
+    setIsLoading(true);
+    try {
+      const lamports = await getMinimumBalanceForRentExemptMint(connection);
+      const mintKeypair = Keypair.generate();
+      const tokenATA = await getAssociatedTokenAddress(mintKeypair.publicKey, publicKey);
 
-    try{
-    const metadataUrl = await uploadMetadata(token);
-    console.log(metadataUrl);
+      const metadataUrl = await uploadMetadata(token);
+      console.log(metadataUrl);
 
-    const createMetadataInstruction = 
-    createCreateMetadataAccountV3Instruction({
-      metadata: PublicKey.findProgramAddressSync(
-        [
-          Buffer.from("metadata"),
-          PROGRAM_ID.toBuffer(),
-          mintKeypair.publicKey.toBuffer(),
-        ],
-        PROGRAM_ID,
-    )[0],
-      mint: mintKeypair.publicKey,
-      mintAuthority: publicKey,
-      payer: publicKey,
-      updateAuthority: publicKey,
-    },
-    {
-      createMetadataAccountArgsV3:{
-        data:{
-          name: token.name,
-          symbol: token.symbol,
-          uri: metadataUrl,
-          creators: null,
-          sellerFeeBasisPoints:0,
-          used: null,
-          collection: null,
+      const createMetadataInstruction = 
+        createCreateMetadataAccountV3Instruction({
+          metadata: PublicKey.findProgramAddressSync(
+            [
+              Buffer.from("metadata"),
+              PROGRAM_ID.toBuffer(),
+              mintKeypair.publicKey.toBuffer(),
+            ],
+            PROGRAM_ID,
+          )[0],
+          mint: mintKeypair.publicKey,
+          mintAuthority: publicKey,
+          payer: publicKey,
+          updateAuthority: publicKey,
         },
-        isMutable: false,
-        collectionDetails:null,
-      },}
-    );
+        {
+          createMetadataAccountArgsV3:{
+            data:{
+              name: token.name,
+              symbol: token.symbol,
+              uri: metadataUrl,
+              creators: null,
+              sellerFeeBasisPoints:0,
+              collection: null,
+              uses: null,
+            },
+            isMutable: false,
+            collectionDetails:null,
+          },}
+        );
 
-    const createNewTokenTransaction = new Transaction().add(
-      SystemProgram.createAccount({
-        fromPubkey: publicKey,
-        newAccountPubkey: mintKeypair.publicKey,
-        space: MINT_SIZE,
-        lamports,
-        programId: TOKEN_PROGRAM_ID,
-      }),
-      createInitializeMintInstruction(
-        mintKeypair.publicKey,
-        Number(token.decimals),
-        publicKey,
-        publicKey,
-        TOKEN_PROGRAM_ID
-      ),
-      createAssociatedTokenAccountInstruction(
-        publicKey,
-        tokenATA,
-        publicKey,
-        mintKeypair.publicKey
-      ),
-      createMintToInstruction(
-        mintKeypair.publicKey,
-        tokenATA,
-        publicKey,
-        Number(token.amount) * Math.pow(10,Number(token.decimals))
-      ),
-      createMetadataInstruction
-    );
+      const createNewTokenTransaction = new Transaction().add(
+        SystemProgram.createAccount({
+          fromPubkey: publicKey,
+          newAccountPubkey: mintKeypair.publicKey,
+          space: MINT_SIZE,
+          lamports,
+          programId: TOKEN_PROGRAM_ID,
+        }),
+        createInitializeMintInstruction(
+          mintKeypair.publicKey,
+          Number(token.decimals),
+          publicKey,
+          publicKey,
+          TOKEN_PROGRAM_ID
+        ),
+        createAssociatedTokenAccountInstruction(
+          publicKey,
+          tokenATA,
+          publicKey,
+          mintKeypair.publicKey
+        ),
+        createMintToInstruction(
+          mintKeypair.publicKey,
+          tokenATA,
+          publicKey,
+          Number(token.amount) * Math.pow(10,Number(token.decimals))
+        ),
+        createMetadataInstruction
+      );
 
-    const signature = await sendTransaction(
-      createNewTokenTransaction,
-      connection,
-      {
-        signature:[mintKeypair],
-      }
-    );
+      const signature = await sendTransaction(
+        createNewTokenTransaction,
+        connection,
+        {
+          signers: [mintKeypair],
+        }
+      );
 
-    setTokenMintAddress(mintKeypair.publicKey.toString());
-    notify({
-      type: "success",
-      message:"Token creation successfully",
-      txid: signature,
-    });
+      setTokenMintAddress(mintKeypair.publicKey.toString());
+      notify({
+        type: "success",
+        message:"Token creation successfully",
+        txid: signature,
+      });
 
-  } catch (error: any)
-  {
-    notify({type:"error", message:"Token Creation failed, try later"});
-  }
+    } catch (error: any) {
+      notify({type:"error", message:"Token Creation failed, try later"});
+    }
     setIsLoading(false);
-  });
+  }, [connection, publicKey, sendTransaction]);
 
   
 
