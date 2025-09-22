@@ -45,7 +45,7 @@ const Home: NextPage = (props) =>
         </div>
       }
 
-      {/* {openTokenMetaData && <div className="new_loader realtive h-full bg-slate-900">
+       {openTokenMetaData && <div className="new_loader realtive h-full bg-slate-900">
         <TokenMetadataView setOpenTokenMetaData={setOpenTokenMetaData} />
       </div>
       }
@@ -63,7 +63,7 @@ const Home: NextPage = (props) =>
       {openSendTransaction && <div className="new_loader realtive h-full bg-slate-900">
         <DonateView setOpenSendTransaction={setOpenSendTransaction} />
       </div>
-      } */}
+      }
       
     </>
   )

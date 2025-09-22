@@ -13,7 +13,7 @@ import { set } from "immer/dist/internal";
 
 export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
   const { connection } = useConnection();
-  const [TokenAddress,setTokenAddress] = useState("");
+  const [tokenAddress,setTokenAddress] = useState("");
   const [TokenMetadata,setTokenMetadata] = useState("");
   const [logo, setLogo] = useState(null);
   const [loaded,setLoaded] = useState(false);
@@ -35,7 +35,7 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
       let logoJson = await logoRes.json();
       let {image} = logoJson;
 
-      setTokenMetadata({tokenMetadata,...metadata});
+      setTokenMetadata({tokenMetadata ,...metadata.data});
       setLogo(image);
       setIsLoading(false);
       setLoaded(true);
@@ -47,7 +47,7 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
        notify({type:"error",message:"Failed to Fetch Token Metadata!"});
        setIsLoading(false);
     }
-  },[TokenAddress])
+  },[tokenAddress])
 
   const CloseModel = () => {
     <a
@@ -72,111 +72,17 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
         </div>
       )}
 
-      {!tokenMintAddress ? (
         <section className="flex w-full items-center py-6 px-0 l:h-screen lg:p-10">
-          <div className="container">
-            <div className="bg-default-950/40 mx-auto max-w-5xl overflow-hidden rounded-2xl backdrop-blur-2xl">
-              <div className="grid gap-10 lg:grid-cols-2">
-                <div className="ps-4 hidden py-4 pt-10 lg:block">
-                  <div className="upload relative w-full overflow-hidden rounded-xl">
-                    {token.image ? (
-                      <img src={token.image} alt="token" className="w-2/5"></img>
-                    ):(
-                      <label htmlFor="file" className="custum-file-upload"> 
-                      <div className="icon">
-                        <CreateSVG/>
-                      </div>
-                      <div className="text">
-                        <span >Click to upload image</span>
-                      </div>
-                      <input type="file" id="file" onChange={handleImageChange}/>
-                      </label>
-                    )}
-                  </div>
-                  <textarea rows={6}
-                  onChange={(e) => handleFormFieldChange("description",e)}
-                  className="border-default-200 relative mt-48 block w-full rounded border-white/10 bg-transparent py-1.5
-                  px-3 text-white/80 focus:border-white/25 focus:ring-transparent"
-                  placeholder="Description of Your Token"></textarea>
-                </div>
-
-                <div className="lp:ps-0 flex flex-col p-10">
-                  <div className="pb-6 my-auto">
-                    <h4 className="mb-4 text-2xl font-bold text-white">
-                      Solana Token Creator
-                    </h4>
-                    <p className="text-default-300 mb-8 max-w-sm">
-                     kidly provide all the details about your token
-                    </p>
-
-                    <div className="text-start">
-                      <InputView
-                      name="Name"
-                      placeholder="name"
-                      clickhandle={(e) => handleFormFieldChange("name",e)}
-                      />
-                       <InputView
-                      name="Symbol"
-                      placeholder="symbol"
-                      clickhandle={(e) => handleFormFieldChange("symbol",e)}
-                      />
-                       <InputView
-                      name="Decimals"
-                      placeholder="decimals"
-                      clickhandle={(e) => handleFormFieldChange("decimals",e)}
-                      />
-                       <InputView
-                      name="Amount"
-                      placeholder="amount"
-                      clickhandle={(e) => handleFormFieldChange("amount",e)}
-                      />
-
-                      <div className="mb-6 text-center">
-                        <button onClick={() => createToken(token)}
-                        className="bg-primary-600/90 hover:bg-primary-600 group mt-5
-                        inline-flex w-full items-center justify-center rounded-lg px-6 py-2 text-white backdrop-blur-2xl
-                        transition-all duration-500" type="submit"
-                        >
-                          <span className="fw-bold">Create Token</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-center">
-                      <ul className="flex flex-wrap item-center justify-center gap-2">
-                        <li>
-                          <a onClick={() => setOpenCreateModel(false)}
-                            className="group inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-2xl
-                            transition-all duration-500 hover:bg-blue-600/60">
-                              <i className="text-2xl text-white group-hover:text-white">
-                                <AiOutlineClose />
-                              </i>
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-      )
-      :  <section className="flex w-full items-center py-6 px-0 l:h-screen lg:p-10">
           <div className="container">
             <div className="bg-default-950/40 mx-auto max-w-5xl overflow-hidden rounded-2xl backdrop-blur-2xl">
             <div className="grid gap-10 lg:grid-cols-2">
               <Branding
                 image ="auth-img"
                 title="to build your solana token creator"
-                message = " try to create you first eveer solana project and if you went to master blockchain development then check the cources"              
-              />
-
+                message = " try to create you first eveer solana project and if you went to master blockchain development then check the cources"
+              />;
+              {
+                !loaded ? (
               <div className="lg:ps-0 flex h-full flex-col p-10">
                 <div className="pb-10">
                   <a className="flex">
@@ -193,55 +99,76 @@ export const TokenMetadata: FC = ({setOpenTokenMetadata})=> {
                   </p>
 
                   <div className="flex items-start justify-center">
-                    <img src={token.image || "assets/images/logo1.png"} alt="" className="h-40"></img>
+                    <img src={"assets/images/logout.svg"} alt="" className="h-40"></img>
                   </div>
 
                   <div className="mt-5 w-full text-center">
                     <p className="text-default-300 text-base font-medium leading-6">
-                      <InputView name={"Token Address"} placeholder = {tokenMintAddress}></InputView>
-                      <span className="cursor-pointer" 
-                      onClick={() => 
-                        navigator.clipboard.writeText(tokenMintAddress)
-                      }>Copy</span>
                     </p>
+                     <InputView name={"Token Address"} placeholder = {"address"}
+                      clickhandle={(e)=> setTokenAddress(e.target.value)}></InputView>
+
+                  <div className="mb-6 text-center">
+                    <button onClick={()=>getMetadata(tokenAddress)}
+                      className="bg-primary-600/90 hover:bg-primary-600 group mt-5 inline-flex 
+                      items-center justify-center rounded-lg px-6 py-2 text-white backdrop-blur-2xl
+                      transition-all duration-500">
+                        <span className="fw-bold">Get Token MetaData</span>
+                      </button>
+                  </div>
+                  <CloseModel/>
+                  </div>
+                </div>
+              </div>
+
+                ):( 
+                  <div className="lg:ps-0 flex h-full flex-col p-10">
+                <div className="pb-10">
+                  <a className="flex">
+                    <img src ="assets/images/logo1.png" alt="logo" className="h-10"/>
+                  </a>
+                </div>
+
+                <div className="my-auto pb-6 text-center">
+                  <div className="flex items-start justify-center">
+                    <img src={logo} alt="" className="h-40"></img>
+                  </div>
+
+                  <div className="mt-5 w-full text-center">
+                    <p className="text-default-300 text-base font-medium leading-6">
+                      </p>
+                      <InputView name={"Token Address"} placeholder = {tokenMetadata?.name}></InputView>
+
+                      <InputView name={"Symbol"} placeholder = {tokenMetadata?.symbol || "undefined"}></InputView>
+
+                      <InputView name={"Token URI"} placeholder = {tokenMetadata?.uri}></InputView>
 
                     <div className="mb-6 text-center">
                       <a 
-                       href={`https://explorer.solana.com/address/${tokenMintAddress}?cluster=${networkConfiguration}`}
+                       href={tokenMetadata?.uri}
                        target="_blank"
                        rel="noreferrer"
                        className="bg-primary-600/90 hover:bg-primary-600 group mt-5
                         inline-flex w-full items-center justify-center rounded-lg px-6 py-2 text-white backdrop-blur-2xl
                         transition-all duration-500"
                       >
-                        <span className="fw-bold">View on Explorer</span>
+                        <span className="fw-bold">OPEN URI</span>
                       </a>
                     </div>
-                    <div>
-                    <div className="text-center">
-                      <ul className="flex flex-wrap item-center justify-center gap-2">
-                        <li>
-                          <a onClick={() => setOpenCreateModel(false)}
-                            className="group inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-2xl
-                            transition-all duration-500 hover:bg-blue-600/60">
-                              <i className="text-2xl text-white group-hover:text-white">
-                                <AiOutlineClose />
-                              </i>
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+               
+                  <CloseModel/>
 
                   </div>
                 </div>
               </div>
+                    )
+
+              }
+
               </div>
             </div>
           </div>
         </section>
-      }
     </>
-  )
-
-}
+  );
+};
