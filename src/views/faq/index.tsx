@@ -1,8 +1,9 @@
 import { FC } from "react";
+import { LuChevronDown } from "react-icons/lu";
 
 export const FaqView: FC = ({})=> {
 
-  const question = [
+  const faqs = [
   {
     question: " Who are produces sit pleasure?",
     answer:
@@ -41,57 +42,57 @@ export const FaqView: FC = ({})=> {
   },
 ];
 
-return (
-  <section id="faq" className="py-20">
-    <div className="container" >
-      <div className="mb-10 flex items-end justify-between">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-4 text-3xl font-medium capitalize text-white"> Any Question ?</h2>
-          <p className="text-default-200 text-sm font-medium">
-            This is FAQ Page in ths section Question are Asked
+  return (
+    <section id="faq" className="relative bg-gray-950 py-20 sm:py-24">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(122,_93,_248,_0.15),_transparent_40%)]"></div>
+
+      <div className="container relative z-10">
+        {/* Section Header */}
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg text-gray-400">
+            Have a question? We've got answers. If you can't find what you're looking for, feel free to contact us.
           </p>
         </div>
-      </div>
 
-      <div className="mx-auto max-w-3xl">
-        <div className="hs-accordion-group space-y-4">
-          {question.map((question,index) => (
-            <div key={index} className={`hs-accordion bg-default-950/40 overflow-hidden rounded-lg border
-            border-white/10 backdrop-blur-3xl`} id ={question.id}>
-              <button className="hs-accordion-toogle inline-flex items-center
-              justify-between gap-x-3 px-6 py-4 text-left capitalize text-white transition-all" aria-controls={`faq-accordion-${index + 1}`}>
-                <h5 className="flex text-base font-semibold ">
-                  <i className="me-3 h-5 w-5 stroke-white align-middle">
-                    {question.question}</i>
-                </h5>
-                <i className="hs-accordion-active-rotate-100 h-4 w-4 trasition-all duration-500"></i>
-              </button>
+        {/* Accordion */}
+        <div className="mx-auto max-w-3xl">
+          <div className="hs-accordion-group space-y-4">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="hs-accordion overflow-hidden rounded-xl border border-gray-700/50 bg-gray-900/50 backdrop-blur-lg"
+                id={`faq-accordion-item-${index}`}
+              >
+                <button
+                  className="hs-accordion-toggle group inline-flex w-full items-center justify-between gap-x-3 px-6 py-5 text-left text-white transition-colors duration-300 hover:bg-gray-800/40"
+                  aria-controls={`faq-accordion-content-${index}`}
+                >
+                  <h5 className="flex text-lg font-semibold">{faq.question}</h5>
+                  <LuChevronDown className="h-5 w-5 transition-transform duration-500 hs-accordion-active:rotate-180" />
+                </button>
 
-              <div id={`faq-accordion-${index +1}`} className="hs-accordion-content w-full overflow-hidden transtion-[height] duration-300"
-              aria-labelledby={question.id}>
-                <div className="px-6 pb-4 pt-0">
-                  <p className="text-default-300 mb-2 text-sm- font-medium">
-                    {question.answer}
-                  </p>
-                  <p className="text-default-300 text-sm font-medium">
-                    Have you ever wanted to become blockchain developer 
-                    check the pro NFT MarketPlace cource
-                  </p>
+                <div
+                  id={`faq-accordion-content-${index}`}
+                  className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300"
+                  aria-labelledby={`faq-accordion-item-${index}`}
+                >
+                  <div className="px-6 pb-5 pt-0">
+                    <p className="text-gray-400">{faq.answer}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-)
-
-
-
-
-}
-
+    </section>
+  );
+};
 
 
 

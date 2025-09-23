@@ -1,29 +1,40 @@
 import React, { FC } from "react";
 
+// Updated props for better reusability and to follow React conventions
 interface InputViewProps {
-  placeholder?: string;
-  name?: string;
-  clickhandle?: React.ChangeEventHandler<HTMLInputElement>;
+  name: string;
+  placeholder: string;
+  value: string | number;
+  type?: 'text' | 'number' | 'password';
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export const InputView: FC<InputViewProps> = ({ placeholder, name, clickhandle }) => {
+export const InputView: FC<InputViewProps> = ({
+  name,
+  placeholder,
+  value,
+  type = 'text', // Default to 'text' if no type is provided
+  onChange,
+}) => {
   return (
-    <div className="mb-4">
-      <label 
-      htmlFor="input-label"
-      className="text-base/normal text-default-200
-      mb-2 block font-semibold"
+    <div className="mb-5">
+      <label
+        htmlFor={name} // Use the 'name' for the 'for' attribute for accessibility
+        className="mb-2 block text-base font-medium text-gray-400"
       >
-        {name}
+        {name}  
       </label>
-      <input 
-      type="text" 
-      id="input-label"
-      onChange={clickhandle}
-      placeholder={placeholder}
-      className="border-default-200 block w-full rounded border-white/10 bg-transparent py-1.5 
-      px-3 text-white/80 focus:border-white/25 focus:ring-transparent"
+      <input
+        type={type}
+        id={name} // Also use 'name' for the id
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="block w-full rounded-lg border border-gray-700 bg-gray-800/50 
+                   px-4 py-3 text-gray-200 transition-all duration-300 
+                   placeholder:text-gray-500 
+                   focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
       />
     </div>
-  )
-}
+  );
+};

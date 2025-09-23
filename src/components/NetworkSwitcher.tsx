@@ -11,7 +11,7 @@ const NetworkSwitcher: FC = () =>
   return <>
   <input type="checkbox" id="checkbox"/>
   <label className="switch">
-    <select value={networkConfiguration} onChange={(e) => setNetworkConfiguration(e.target.value || "devnet")} className="select max-w-xs border-none bg-tranparent outline-0">
+    <select value={networkConfiguration} onChange={(e) => setNetworkConfiguration(e.target.value || "devnet")} className="select w-xs border-none bg-tranparent outline-0">
 
       <option value="mainnet-beta">Mainnet</option>
       <option value="devnet">Devnet</option>

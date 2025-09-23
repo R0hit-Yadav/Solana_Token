@@ -1,119 +1,122 @@
-import React, {FC} from 'react'
+import React, { FC } from "react";
 import { useForm } from "@formspree/react";
-import {  TiSocialLinkedin, TiSocialTwitter , TiSocialYoutube} from "react-icons/ti";
+import { TiSocialLinkedin, TiSocialTwitter, TiSocialYoutube } from "react-icons/ti";
+import { LuHeart, LuSend } from "react-icons/lu";
 
 export const Footer: FC = () => {
-  const [state, handleSubmit] = useForm("xldprwga");
-  if (state.succeeded) {
-      <h1 className='md:text-5xl/tight my-4 max-w-lg text-4xl font-medium text-white'>Thanks for sending your message!
-      </h1>
-  }
+  const [state, handleSubmit] = useForm("xldprwga"); // Replace with your Formspree ID
 
-  const menuOne = [
-    "Support Center",
-    "Customer Support",
-    "About Us",
-    "Project",
-    "Return Policy",
+  const usefulLinks = ["About Us", "Documentation", "Solana Explorer", "Terms of Service", "Return Policy"];
+  const communityLinks = ["GitHub", "Press Inquiries", "Social Media", "Site Map"];
+  const socialLinks = [
+    { icon: <TiSocialLinkedin size={20} />, href: "#" },
+    { icon: <TiSocialTwitter size={20} />, href: "#" },
+    { icon: <TiSocialYoutube size={20} />, href: "#" },
   ];
 
-  const menuTwo = [
-    "Press Inquiries",
-    "Social Media Support",
-    "Image & B-roll",
-    "Site Map",
-  ];
+  return (
+    <footer className="relative overflow-hidden border-t border-gray-700/50 bg-gray-950/80 backdrop-blur-lg">
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
-  return ( <footer className='bg-default-950/40 backdrop-blur-3xl'>
-    <div className="container py-20 lg:px-20">
-      <div className="grid grid-cols-2 gap-10 lg:grid-cols lg:gap-16">
-        <div className='col-span-2 sm:col-span-1 lg:col-span-3'>
-          <ul className='flex flex-col gap-3'>
-            <h5 className='text-default-200 mb-2 font-medium lg:text-lg xl:text-xl'>
-              About Us
-            </h5>
-            { menuOne.map((item, index)=>(
-              <li key={index}>
-                <a href="#" className='text-default-300 text-base trasition-all hover:text-white'>
-                  <i data-lucide = "gauge-circle" className='me-2 inline-block h-4 w-4'>
-                  </i>
-                    {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className='col-span-2 sm:col-span-1 lg:col-span-3'>
-          <ul className='flex flex-col gap-3'>
-            <h5 className='text-default-200 mb-2 font-medium lg:text-lg xl:text-xl'>
-              My Account
-            </h5>
-              { menuTwo.map((item, index)=>(
-              <li key={index}>
-                <a href="#" className='text-default-300 text-base trasition-all hover:text-white'>
-                  <i data-lucide = "gauge-circle" className='me-2 inline-block h-4 w-4'>
-                  </i>
-                    {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className='col-span-2 lg:col-span-6'>
-          <div className='bg-primary/20 rounded-xl'>
-          <div className='p-10'>
-            <h6 className='mb-4 text-xl text-white'>NewsLetter</h6>
-            <p className='text-default-200 mb-6 text-base fornt-medium'>
-              Signup and recevied the latest updates and offers.
+      <div className="container relative z-10 py-20 lg:px-16">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
+          {/* Column 1: About & Socials */}
+          <div className="md:col-span-12 lg:col-span-4">
+            <a href="/" className="flex-shrink-0">
+              <img src="assets/images/logo1.png" alt="logo" className="h-10" />
+            </a>
+            <p className="mt-6 text-base text-gray-400">
+              Your all-in-one platform to design, mint, and manage SPL tokens on the Solana blockchain with ease.
             </p>
-            <form onSubmit={handleSubmit} className='mb-6 space-y-2'>
-              <label htmlFor='email' className='text-base text-white'>Email</label>
-              <div className='relative'>
-                <input type='email' id="email" name="email" className='bg-default-950/60 pe-40 ps-4 h-12 w-full
-                rounded-lg border-white/10 py-4 text-white backdrop-blur-3xl focus:border-white/10 focus:ring-0'/>
-                <button type='submit' disabled={state.submitting} className='hover:bg-primary-hover hover:border-primery-hover vorder-primary bg-primary end-[6px] 
-                absolute top-[6px] inline-flex h-9 items-center justify-center gap-2 roundd-md px-6
-                text-white transition-all'>
-                  Subscribe
-                </button>
-              </div>
-            </form>
-
-            <div>
-              <h6 className='mb-4 text-base text-white'>Follow Us</h6>
-              <ul className='flex flex-wrap items-center gap-1'>
-                {[
-                  <TiSocialLinkedin/>, 
-                  <TiSocialTwitter/>, 
-                  <TiSocialYoutube/>
-                ].map((social, index)=> (
-                  <li key={index}>
-                    <a href="#" className='hover:bg-primary-hover group inline-flex h-10 w-10
-                    items-center rounded-lg border border-white/10 transition-all duration-500'>
-                      <i data-lucide="facebook" className="text-default-300 group-hover:text-white">
-                        {social}
-                      </i>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul className="mt-6 flex flex-wrap items-center gap-2">
+              {socialLinks.map((social, index) => (
+                <li key={index}>
+                  <a
+                    href={social.href}
+                    className="group flex h-10 w-10 items-center justify-center rounded-lg border border-gray-700 text-gray-400 transition-all duration-300 hover:border-purple-500 hover:bg-purple-500 hover:text-white"
+                  >
+                    {social.icon}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
+
+          {/* Column 2: Useful Links */}
+          <div className="md:col-span-4 lg:col-span-2">
+            <h5 className="mb-4 font-semibold text-lg text-white">Useful Links</h5>
+            <ul className="flex flex-col gap-3">
+              {usefulLinks.map((item, index) => (
+                <li key={index}>
+                  <a href="#" className="text-gray-400 transition-all hover:text-white hover:translate-x-1">
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Column 3: Community Links */}
+          <div className="md:col-span-4 lg:col-span-2">
+            <h5 className="mb-4 font-semibold text-lg text-white">Community</h5>
+            <ul className="flex flex-col gap-3">
+              {communityLinks.map((item, index) => (
+                <li key={index}>
+                  <a href="#" className="text-gray-400 transition-all hover:text-white hover:translate-x-1">
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Newsletter */}
+          <div className="md:col-span-4 lg:col-span-4">
+            <h5 className="mb-4 font-semibold text-lg text-white">Subscribe to Newsletter</h5>
+            <p className="text-gray-400 mb-4">
+              Get the latest updates and offers delivered directly to your inbox.
+            </p>
+            
+            {state.succeeded ? (
+              <p className="rounded-lg bg-green-500/20 p-4 text-center text-green-400">
+                Thanks for subscribing!
+              </p>
+            ) : (
+              <form onSubmit={handleSubmit} className="relative">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  className="h-14 w-full rounded-lg border border-gray-700 bg-gray-800/50 px-4 pr-32 text-gray-200 transition-all duration-300 placeholder:text-gray-500 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={state.submitting}
+                  className="group absolute top-1/2 right-2 -translate-y-1/2 inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-purple-600 to-cyan-500 px-4 py-2.5 font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {state.submitting ? 'Submitting...' : 'Subscribe'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
-    </div>
 
-    <div className='border-t border-white/10 py-6'>
-      <div className='md:text-start container flex h-full flex-wrap items-center justify-center gap-4 text-center md:justify-between lg:px-20'>
-        <p className='text-default-400 text-base font-medium'>@ SolanaAI - <a href="#">Design & Created <i data-lucide="heart" className='inline h-4 w-4 fill-red-500 text-red-500'></i>
-        by @RohitYadav</a></p>
-        <p className='text-default-400 text-base font-medium'>Terms Conditions & Policy</p>
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-700/50 py-6">
+        <div className="container flex flex-wrap items-center justify-center gap-4 text-center md:justify-between lg:px-16">
+          <p className="text-base text-gray-500">
+            © {new Date().getFullYear()} SolanaAI. Crafted with{" "}
+            <LuHeart className="inline h-4 w-4 fill-red-500 text-red-500" /> by RohitYadav
+          </p>
+          <p className="text-base text-gray-500">
+            <a href="#">Terms & Conditions</a>
+          </p>
+        </div>
       </div>
-    </div>
-  </footer>);
+    </footer>
+  );
 };
-
-export default Footer

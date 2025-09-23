@@ -1,87 +1,98 @@
-import React ,{FC} from 'react'
-import { LuArrowRightFromLine } from 'react-icons/lu'
-import { MdGeneratingTokens, MdToken } from 'react-icons/md'
-import { RiTokenSwapFill } from 'react-icons/ri'
-import { RxTokens} from 'react-icons/rx'
+import React, { FC } from 'react';
+import { LuCombine, LuDroplets, LuSendHorizonal, LuSliders, LuArrowRight } from 'react-icons/lu';
 
-export const FeatureView = ({  setOpenAirdrop,
-  setOpenContact,
+// Define the component's props interface for type safety
+interface FeatureViewProps {
+  setOpenAirdrop: (open: boolean) => void;
+  setOpenContact: (open: boolean) => void;
+  setOpenCreateModal: (open: boolean) => void;
+  setOpenSendTransaction: (open: boolean) => void;
+  setOpenTokenMetaData: (open: boolean) => void;
+}
+
+export const FeatureView: FC<FeatureViewProps> = ({
+  setOpenAirdrop,
   setOpenCreateModal,
   setOpenSendTransaction,
-  setOpenTokenMetaData
+  setOpenTokenMetaData,
 }) => {
-
+  // Updated features array with unique descriptions and consistent icons
   const features = [
     {
-      name:"Token Generator",
-      icon: <MdGeneratingTokens/>,
-      description: "Start working with solana token creator, It Allow you to create solana token by creating , deploying , airdrop, trandfering and updating token", 
+      name: 'Token Generator',
+      icon: <LuCombine size={32} />,
+      description: 'Use our intuitive wizard to create, mint, and deploy your custom SPL token without writing a single line of code.',
       function: setOpenCreateModal,
     },
     {
-      name:"Get Airdop",
-      icon: <MdToken/>,
-      description: "Start working with solana token creator, It Allow you to create solana token by creating , deploying , airdrop, trandfering and updating token",
+      name: 'Get Airdrop',
+      icon: <LuDroplets size={32} />,
+      description: 'Instantly fund your devnet wallet with free SOL to test your new tokens and applications effortlessly.',
       function: setOpenAirdrop,
     },
     {
-      name:"Transfer Sol",
-      icon: <RiTokenSwapFill/>,
-      description: "Start working with solana token creator, It Allow you to create solana token by creating , deploying , airdrop, trandfering and updating token",
+      name: 'Transfer SOL',
+      icon: <LuSendHorizonal size={32} />,
+      description: 'A simple and secure interface to send SOL or any SPL token to another wallet on the Solana network.',
       function: setOpenSendTransaction,
     },
-     {
-      name:"Token Metadata",
-      icon: <RxTokens/>,
-      description: "Start working with solana token creator, It Allow you to create solana token by creating , deploying , airdrop, trandfering and updating token",
+    {
+      name: 'Token Metadata',
+      icon: <LuSliders size={32} />,
+      description: 'Easily view or update the on-chain metadata for any token you own, including name, symbol, and URI.',
       function: setOpenTokenMetaData,
-    }
+    },
+  ];
+
+  const iconColors = [
+    'bg-purple-600/20 text-purple-400',
+    'bg-cyan-600/20 text-cyan-400',
+    'bg-teal-600/20 text-teal-400',
+    'bg-sky-600/20 text-sky-400',
   ];
 
   return (
-    <section className='py-20'>
-      <div className='container'>
-        <div className='mb-10 flex items-end justify-between'>
-          <div className='mx-auto max-w-2xl text-center'>
-            <h2 className='mb-4 text-3xl font-medium capitalize text-white'>
-              Choose Solana Blockchain Generator
-            </h2>
-            <p className='text-default-200 text-sm font-medium'>
-              Now You can create solana token <br /> to withour code intantly
-            </p>
-          </div>
+    <section id="features" className="relative bg-gray-950 py-20 sm:py-24">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(122,_93,_248,_0.15),_transparent_40%)]"></div>
+
+      <div className="container relative z-10">
+        {/* Section Header */}
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+            An All-in-One Toolkit for Solana
+          </h2>
+          <p className="text-lg text-gray-400">
+            From creation to distribution, our platform provides the essential tools you need to manage your token projects.
+          </p>
         </div>
 
-      <div className='bg-default-950/40 flex flex-wrap items-center rounded-3xl backdrop-blur-3xl'>
-      {features.map((feature, index) => (
-        <div key={index} className={`w-auto grow border-b border-white/10 md:w-1/2 ${
-        index == 0 ? 'md:border-e'
-         :index == 1
-         ?""
-         :index == 2 
-         ? "md:border-e md:border-b-0"
-         :""
-        }`}>
-          <div className='p-8 sm:p-10'>
-            <div className='bg-primary/10 ext-primary mb-10 inline-flex h-16 w-16 items-center justify-center
-            rounded-xl'>
-              <i data-lucide = "farmer">{feature.icon}</i>
-            </div>
-            <h2 className='mb-4 text-2xl font-medium text-white'>{feature.name}</h2>
-            <p className='text-default-200 mb-6 text-base'>{feature.description}</p>
-             <a onClick={() => feature.function(true)} className='hover:bg-primary
-             inline-flex items-center justify-center gap-2 rounded-full order border-whote/10
-             px-6 py-2 text-white trasition-all duration-300'>
-              Use Tools
-             </a>
-             <i>
-              <LuArrowRightFromLine/>
-             </i>
+        {/* Features Grid */}
+        <div className="overflow-hidden rounded-2xl border border-gray-700/50 bg-gray-900/50 backdrop-blur-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {features.map((feature, index) => (
+              <div
+                key={feature.name}
+                onClick={() => feature.function(true)}
+                className="group relative cursor-pointer p-8 transition-colors duration-300 hover:bg-gray-800/40
+                           border-t border-gray-700/50
+                           md:[&:nth-child(1)]:border-t-0 md:[&:nth-child(2)]:border-t-0
+                           md:[&:nth-child(odd)]:border-r md:[&:nth-child(odd)]:border-gray-700/50"
+              >
+                <div
+                  className={`mb-6 flex h-16 w-16 items-center justify-center rounded-xl ${iconColors[index % iconColors.length]}`}
+                >
+                  {feature.icon}
+                </div>
+                <h3 className="mb-4 text-2xl font-bold text-white">{feature.name}</h3>
+                <p className="text-gray-400">{feature.description}</p>
+                <LuArrowRight className="absolute top-8 right-8 text-gray-700 transition-all duration-300 group-hover:text-purple-400 group-hover:translate-x-1" size={24} />
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-      </div>
       </div>
     </section>
-  )
+  );
 };
