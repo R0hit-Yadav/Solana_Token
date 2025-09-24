@@ -1,14 +1,14 @@
 /* 
-Template Name: WebAi - AI Startup & Technology Landing Page HTML Template
-Version: 1.0
-Author: coderthemes
-Email: support@coderthemes.com
+Template Name: Solana Token - Blockchain & Cryptocurrency Platform
+Version: 2.0 - Solana Theme
+Author: Solana Developers
+Email: support@solana.com
 File: style.scss
 */
 
-/* Google Font Family Link */
-
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
+/* Solana Theme Imports */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+@import "solana-theme.css";
 @import "custom/_reboot.css";
 @import "custom/_navbar.css";
 @import "custom/_swiper.css";

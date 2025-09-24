@@ -126,3 +126,50 @@
     align-items: center;
   }
 }
+
+
+/* In your global CSS file */
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes progress-bar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-slide-in-from-right {
+  animation: slide-in-from-right 0.5s ease-out forwards;
+}
+
+.animate-progress {
+  animation: progress-bar 8s linear forwards;
+}
+
+/* In your global CSS file */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

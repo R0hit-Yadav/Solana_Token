@@ -1,7 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import {FC} from "react";
-import { ContextProvider } from "../context/ContextProvider";
+import { ContextProvider } from "../contexts/ContextProvider";
 import { AppBar } from "../components/AppBar";
 import { Footer} from "../components/Footer";
 import Notifications from "components/Notification";
