@@ -179,12 +179,13 @@ section {
     white-space: nowrap;
     font-family: 'Orbitron', monospace;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: .5rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(0 0 10px rgba(153, 69, 255, 0.5));
+    
 }
 
 .navbar nav .navbar-nav {

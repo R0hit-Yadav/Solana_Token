@@ -56,8 +56,13 @@ export const DonateView: FC<DonateViewProps> = ({ setOpenSendTransaction }) => {
       return;
     }
 
-    // TODO: IMPORTANT! Replace this with your actual destination wallet address.
-    const creatorAddress = new PublicKey("7HaKq1QuXVxt7QQLGS66621kbBBojCX8vcDCQHhPe9QH");
+    // Use creator address from environment variable
+    const envAddress = process.env.NEXT_PUBLIC_CREATOR_ADDRESS;
+    if (!envAddress) {
+      notify({ type: "error", message: "Creator address not set in environment!" });
+      return;
+    }
+    const creatorAddress = new PublicKey(envAddress);
     
     setIsSending(true);
     let signature: TransactionSignature = "";
