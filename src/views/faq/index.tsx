@@ -5,40 +5,39 @@ export const FaqView: FC = ({})=> {
 
   const faqs = [
   {
-    question: " Who are produces sit pleasure?",
+    question: "What is an SPL Token?",
     answer:
-      " Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-    id: "faq-1",
+      "SPL stands for Solana Program Library. An SPL Token is the standard for creating and managing tokens on the Solana blockchain, similar to ERC-20 tokens on Ethereum. They are incredibly fast and have very low transaction costs, making them ideal for a wide range of applications.",
   },
   {
-    question: " What is quo voluptas nulla pariatur?",
+    question: "Do I need to know how to code to use this tool?",
     answer:
-      "Vivamus elementum semper nisi. Aenean vulputate eleifendtellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
-    id: "faq-2",
+      "Absolutely not! Our platform provides a simple, step-by-step interface that handles all the technical complexity for you. You can create, mint, and manage your own token without writing a single line of code.",
   },
   {
-    question: "How to do transactions using iMbank?",
+    question: "How much does it cost to create a token on Solana?",
     answer:
-      " Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-    id: "faq-3",
+      "Creating a token on Solana is very affordable. The network requires a small amount of SOL (typically less than 0.05 SOL) to store the token's data on the blockchain. Our platform may charge a small additional service fee for using the tool.",
   },
   {
-    question: " hot to activate iMbank service?",
+    question: "What information do I need to provide?",
     answer:
-      "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-    id: "faq-4",
+      "You will need to provide some basic details for your token: a Token Name (e.g., 'Solana AI Token'), a Symbol (e.g., 'SAT'), a logo/image, the number of decimals, the initial supply, and a short description.",
   },
   {
-    question: "  Who is eligible to open iMbank account?",
+    question: "What are 'decimals' and what number should I choose?",
     answer:
-      "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-    id: "faq-5",
+      "Decimals determine the smallest fraction of your token. For example, if you choose 9 decimals, your token can be divided down to 0.000000001. A value of 6 or 9 is standard and recommended for compatibility with most wallets and decentralized exchanges (DEXs).",
   },
   {
-    question: "wil i be given a passbook?",
+    question: "Can I change my token's name or logo after it's created?",
     answer:
-      "Aenean commodo ligula eget dolor. Aenean massa. Cum sociisnatoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-    id: "faq-6",
+      "Yes, you can. The metadata for your token (name, symbol, logo) is mutable by default, meaning that you, as the update authority, can make changes later using our 'Token Metadata' tool.",
+  },
+  {
+    question: "Who has control over the token supply?",
+    answer:
+      "You do. The wallet you use to create the token is assigned the 'Mint Authority.' This gives you the exclusive power to mint new tokens. Our platform never has access to or control over your token's supply.",
   },
 ];
 

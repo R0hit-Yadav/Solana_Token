@@ -109,8 +109,12 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({setOpenTokenMetadata})=> 
                   <div className="mt-5 w-full text-center">
                     <p className="text-default-300 text-base font-medium leading-6">
                     </p>
-                     <InputView name={"Token Address"} placeholder = {"address"}
-                      clickhandle={(e)=> setTokenAddress(e.target.value)}></InputView>
+                     <InputView
+                      name={"Token Address"}
+                      placeholder={"address"}
+                      value={tokenAddress}
+                      onChange={(e) => setTokenAddress(e.target.value)}
+                     ></InputView>
 
                   <div className="mb-6 text-center">
                     <button onClick={()=>getMetadata(tokenAddress)}
@@ -141,11 +145,26 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({setOpenTokenMetadata})=> 
                   <div className="mt-5 w-full text-center">
                     <p className="text-default-300 text-base font-medium leading-6">
                       </p>
-                      <InputView name={"Token Address"} placeholder = {TokenMetadata?.name}></InputView>
+                      <InputView
+                        name={"Token Address"}
+                        placeholder={TokenMetadata?.name}
+                        value={tokenAddress}
+                        onChange={(e) => setTokenAddress(e.target.value)}
+                      ></InputView>
 
-                      <InputView name={"Symbol"} placeholder = {TokenMetadata?.symbol || "undefined"}></InputView>
+                      <InputView
+                        name={"Symbol"}
+                        placeholder={TokenMetadata?.symbol || "undefined"}
+                        value={TokenMetadata?.symbol || ""}
+                        onChange={() => {}}
+                      ></InputView>
 
-                      <InputView name={"Token URI"} placeholder = {TokenMetadata?.uri}></InputView>
+                      <InputView
+                        name={"Token URI"}
+                        placeholder={TokenMetadata?.uri}
+                        value={TokenMetadata?.uri || ""}
+                        onChange={() => {}}
+                      ></InputView>
 
                     <div className="mb-6 text-center">
                       <a 

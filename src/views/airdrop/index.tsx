@@ -1,53 +1,59 @@
-import React, {FC, useEffect,useCallback} from "react";
+import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL , TransactionSignature} from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, TransactionSignature } from "@solana/web3.js";
 import { notify } from "utils/notifications";
-import { AiOutlineClose } from "react-icons/ai";
-
-
-import Branding from "components/Branding";
-import { get } from "http";
+import { LuX, LuDroplets } from "react-icons/lu";
 
 interface AirdropViewProps {
   setOpenAirdrop: (open: boolean) => void;
 }
 
 export const AirdropView: FC<AirdropViewProps> = ({ setOpenAirdrop }) => {
-  const wallet = useWallet();
-  const { connection} = useConnection();
-  const { publicKey} = useWallet();
+  const { connection } = useConnection();
+  const { publicKey } = useWallet();
+  const balance = useUserSOLBalanceStore((s) => s.balance);
+  const { getUserSOLBalance } = useUserSOLBalanceStore();
 
-  const balance = useUserSOLBalanceStore((s)=> s.balance);
-  const { getUserSOLBalance} = useUserSOLBalanceStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
+  // Fetch balance on mount and when publicKey changes
   useEffect(() => {
-
-    if (wallet.publicKey){
-      getUserSOLBalance(wallet.publicKey,connection);
+    if (publicKey) {
+      getUserSOLBalance(publicKey, connection);
     }
+  }, [publicKey, connection, getUserSOLBalance]);
+  
+  // Close modal on escape key press
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenAirdrop(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setOpenAirdrop]);
 
-  },[wallet.publicKey, connection, getUserSOLBalance]);
+  // Close modal on outside click
+  const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      setOpenAirdrop(false);
+    }
+  };
 
-  const onClick = useCallback ( async () => {
-    if(!publicKey){
-      notify({
-        type:"error",
-        message:"wallet not connected!",
-        description:"Wallet Not Connected!"
-      });
+  const handleAirdrop = useCallback(async () => {
+    if (!publicKey) {
+      notify({ type: "error", message: "Wallet not connected!" });
       return;
     }
 
-    let signature :TransactionSignature = "";
+    setIsLoading(true);
+    let signature: TransactionSignature = "";
     try {
-      signature = await connection.requestAirdrop(publicKey,LAMPORTS_PER_SOL);
-      notify({
-        type: "success",
-        message: "You have SuccessFully Claim 1 Airdrop",
-        txid: signature,
-      });
-
+      signature = await connection.requestAirdrop(publicKey, LAMPORTS_PER_SOL);
+      
       const latestBlockHash = await connection.getLatestBlockhash();
       await connection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
@@ -55,79 +61,67 @@ export const AirdropView: FC<AirdropViewProps> = ({ setOpenAirdrop }) => {
         signature,
       });
 
-      getUserSOLBalance(publicKey,connection);
-    }catch(error: any)
-    {
-       notify({
+      notify({
+        type: "success",
+        message: "Airdrop of 1 SOL successful!",
+        txid: signature,
+      });
+
+      getUserSOLBalance(publicKey, connection);
+    } catch (error: any) {
+      notify({
         type: "error",
         message: "Airdrop failed!",
         description: error?.message,
         txid: signature,
       });
+    } finally {
+      setIsLoading(false);
     }
-  },[publicKey, connection, getUserSOLBalance]);
+  }, [publicKey, connection, getUserSOLBalance]);
 
-    const CloseModel: React.FC = () => (
-      <a
-        onClick={() => setOpenAirdrop(false)}
-        className="gorup mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/20
-        backdrop-blur-2xl resation-all duration-500
-        hover:bg-blye-600/60"
-        style={{ cursor: "pointer" }}
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md"
+      onClick={handleOutsideClick}
+    >
+      <div
+        ref={modalRef}
+        className="relative w-full max-w-md rounded-2xl border border-gray-700/50 bg-gray-900/80 p-8 shadow-2xl shadow-purple-500/10"
       >
-        <i className="text-2xl text-white gorup-hover:text-white">
-          <AiOutlineClose />
-        </i>
-      </a>
-    );
+        <button
+          onClick={() => setOpenAirdrop(false)}
+          className="absolute top-4 right-4 rounded-full p-2 text-gray-500 transition-colors duration-300 hover:bg-gray-700 hover:text-white"
+          aria-label="Close modal"
+        >
+          <LuX size={24} />
+        </button>
 
-    return(
-      <>
-        <section className="flex w-full items-center py-6 px-0 l:h-screen lg:p-10">
-          <div className="container">
-            <div className="bg-default-950/40 mx-auto max-w-5xl overflow-hidden rounded-2xl backdrop-blur-2xl">
-            <div className="grid gap-10 lg:grid-cols-2">
-              <Branding
-                image ="auth-img"
-                title="to build your solana token creator"
-                message = " try to create you first eveer solana project and if you went to master blockchain development then check the cources"
-              />;
-              <div className="lg:ps-0 flex h-full flex-col p-10">
-                <div className="pb-10">
-                  <a className="flex">
-                    <img src ="assets/images/logo1.png" alt="logo" className="h-10"/>
-                  </a>
-                </div>
-
-                <div className="my-auto pb-6 text-center">
-                  <h4 className="mb-4 text-2xl font-bold text-white">
-                    {wallet && (
-                      <p>SOL Balance:{(balance || 0).toLocaleString()}</p>
-                    )}
-                  </h4>
-                  <p className="text-default-300 mx-auto mb-5 max-w-sm">
-                    Now you can claim your 1 SOL Airdrop, and use to test and create token in our platform
-                  </p>
-
-                  <div className="flex items-start justify-center">
-                    <img src = "assets/images/logout.svg" alt="" className="h-40"></img>
-                  </div>
-                  <div className="mb-6 text-center">
-                    <button onClick={onClick} disabled={!publicKey}
-                      className="bg-primary-600/90 hover:bg-primary-600 group mt-5 inline-flex 
-                      items-center justify-center rounded-lg px-6 py-2 text-white backdrop-blur-2xl
-                      transition-all duration-500">
-                        <span className="fw-bold">AirDrop 1</span>
-                      </button>
-                  <CloseModel/>
-                  </div>
-                  </div>
-              </div>
-              </div>
-            </div>
+        <div className="text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-400">
+            <LuDroplets size={32} />
           </div>
-        </section>
-    </>
+          <h2 className="mb-2 text-3xl font-bold text-white">Request Airdrop</h2>
+          <p className="mb-6 text-gray-400">
+            Get 1 SOL for testing on the Devnet. Your current balance is displayed below.
+          </p>
 
-    );
+          <div className="mb-6 rounded-lg bg-gray-800/50 p-4">
+            <p className="text-sm font-medium text-gray-400">Current Balance</p>
+            <p className="text-2xl font-bold text-white">
+              {(balance || 0).toLocaleString()} SOL
+            </p>
+          </div>
+
+          <button
+            onClick={handleAirdrop}
+            disabled={!publicKey || isLoading}
+            className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-purple-600 to-cyan-500 px-6 py-3 text-lg font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-cyan-600 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+          >
+            {isLoading ? "Requesting..." : "Airdrop 1 SOL"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };

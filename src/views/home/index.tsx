@@ -58,12 +58,12 @@ export const HomeView: FC<HomeViewProps> = ({ setOpenCreateModal }) => {
             <div className="marquee flex w-60 flex-col gap-6">
               <div className="marquee-content flex flex-col gap-6">
                 {marqueeImages1.map((image, index) => (
-                  <img key={`col1-${index}`} src={`/assets/images/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
+                  <img key={`col1-${index}`} src={`/assets/images/ai/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
                 ))}
               </div>
               <div aria-hidden="true" className="marquee-content flex flex-col gap-6">
                  {marqueeImages1.map((image, index) => (
-                  <img key={`col1-clone-${index}`} src={`/assets/images/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
+                  <img key={`col1-clone-${index}`} src={`/assets/images/ai/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
                 ))}
               </div>
             </div>
@@ -72,12 +72,12 @@ export const HomeView: FC<HomeViewProps> = ({ setOpenCreateModal }) => {
             <div className="marquee-reverse flex w-60 flex-col gap-6">
                <div className="marquee-content flex flex-col gap-6">
                 {marqueeImages2.map((image, index) => (
-                  <img key={`col2-${index}`} src={`/assets/images/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
+                  <img key={`col2-${index}`} src={`/assets/images/ai/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
                 ))}
               </div>
               <div aria-hidden="true" className="marquee-content flex flex-col gap-6">
                  {marqueeImages2.map((image, index) => (
-                  <img key={`col2-clone-${index}`} src={`/assets/images/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
+                  <img key={`col2-clone-${index}`} src={`/assets/images/ai/${image}.jpg`} alt="" className="aspect-square h-auto w-full rounded-xl object-cover shadow-lg" />
                 ))}
               </div>
             </div>

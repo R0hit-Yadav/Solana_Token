@@ -99,7 +99,7 @@ export const Footer: FC = () => {
                 >
                   {state.submitting ? 'Submitting...' : 'Subscribe'}
                 </button>
-              </form>
+              </form> 
             )}
           </div>
         </div>
