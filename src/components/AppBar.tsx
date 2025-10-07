@@ -57,14 +57,14 @@ export const AppBar: FC = (props) => {
         )}
 
         <div className="container mx-auto px-4 relative z-10">
-          <nav className="flex items-center justify-between py-4">
+          <nav className="flex items-center justify-between py-4 h-20">
             {/* Logo */}
             <a href="/" className="logo flex items-center group relative z-50">
               <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 to-cyan-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
               <img 
                 src="assets/images/logo1.png" 
                 alt="SOLmate Logo" 
-                className="h-16 relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(153,69,255,0.5)]" 
+                className="h-20 relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(153,69,255,0.5)]" 
               />
             </a>
 
