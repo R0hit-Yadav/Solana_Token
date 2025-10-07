@@ -27,7 +27,7 @@ export const Footer: FC = () => {
           
           <div className="md:col-span-12 lg:col-span-4">
             <a href="/" className="flex-shrink-0 group">
-              <img src="assets/images/logo1.png" alt="logo" className="h-10 transition-transform duration-300 group-hover:scale-105" />
+              <img src="assets/images/logo1.png" alt="logo" className="h-20 transition-transform duration-300 group-hover:scale-105" />
             </a>
             <p className="mt-6 text-base leading-relaxed text-gray-300">
               Your all-in-one platform to design, mint, and manage SPL tokens on the Solana blockchain with ease.

@@ -2,7 +2,18 @@ import React, { FC, useState, useCallback, useRef, useEffect } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { Metadata, PROGRAM_ID } from "@metaplex-foundation/mpl-token-metadata";
-import { LuX, LuSearch, LuLink, LuRefreshCw } from "react-icons/lu";
+import { 
+  LuX, 
+  LuSearch, 
+  LuLink, 
+  LuRefreshCw, 
+  LuSparkles, 
+  LuCopy, 
+  LuCheckCircle,
+  LuExternalLink,
+  LuDatabase,
+  LuFileText
+} from "react-icons/lu";
 import { ClipLoader } from "react-spinners";
 import { notify } from "../../utils/notifications";
 import { InputView } from "../input";
@@ -18,6 +29,7 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
   const [logo, setLogo] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -28,16 +40,18 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
         setOpenTokenMetadata(false);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setOpenTokenMetadata(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
   }, [setOpenTokenMetadata]);
-
-  // Close modal on outside click
-  const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      setOpenTokenMetadata(false);
-    }
-  };
 
   const getMetadata = useCallback(async () => {
     if (!tokenAddress) {
@@ -77,70 +91,201 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
     setTokenMetadata(null);
     setLogo(null);
     setLoaded(false);
+    setCopied(false);
+  };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    notify({ type: "success", message: "Copied to clipboard!" });
   };
   
   const renderContent = () => {
     if (!loaded) {
       // SEARCH VIEW
       return (
-        <div className="text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
-            <LuSearch size={32} />
+        <div className="text-center space-y-6">
+          {/* Header Section */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
+              <LuSparkles className="text-cyan-400" size={20} />
+              <span className="text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                TOKEN EXPLORER
+              </span>
+            </div>
+            
+            <h3 className="mb-3 text-4xl font-black tracking-tight">
+              <span className="bg-gradient-to-r from-white via-cyan-200 to-purple-300 bg-clip-text text-transparent">
+                Discover Token
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Metadata
+              </span>
+            </h3>
+            
+            <p className="text-lg text-slate-400 max-w-sm mx-auto">
+              Enter a token mint address to view its complete on-chain and off-chain metadata
+            </p>
           </div>
-          <h3 className="mb-2 text-2xl font-bold text-white">View Token Metadata</h3>
-          <p className="mb-6 text-gray-400">
-            Enter a token mint address to view its on-chain and off-chain metadata.
-          </p>
-          <InputView
-            name="Token Address"
-            placeholder="Enter token mint address"
-            value={tokenAddress}
-            onChange={(e) => setTokenAddress(e.target.value)}
-          />
+
+          {/* Search Icon */}
+          <div className="relative mx-auto mb-8">
+            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 shadow-lg shadow-cyan-500/30 mx-auto">
+              <LuSearch className="text-white" size={36} />
+            </div>
+          </div>
+
+          {/* Input Field */}
+          <div className="relative group">
+            <InputView
+              name="Token Mint Address"
+              placeholder="Enter Solana token mint address..."
+              value={tokenAddress}
+              onChange={(e) => setTokenAddress(e.target.value)}
+            />
+            <LuDatabase className="absolute top-10 right-4 text-slate-500 group-focus-within:text-cyan-400 transition-colors duration-300" size={20} />
+          </div>
+
+          {/* Search Button */}
           <button
             onClick={getMetadata}
-            disabled={isLoading}
-            className="group mt-4 inline-flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-purple-600 to-cyan-500 px-6 py-3 text-lg font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-cyan-600 hover:scale-105 disabled:opacity-50"
+            disabled={isLoading || !tokenAddress}
+            className="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-600 to-purple-500 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:from-cyan-700 hover:to-purple-600 hover:shadow-lg hover:shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
           >
-            {isLoading ? "Fetching..." : "Get Metadata"}
+            {isLoading ? (
+              <>
+                <ClipLoader color="#fff" size={20} />
+                <span>Fetching Metadata...</span>
+              </>
+            ) : (
+              <>
+                <LuSearch className="group-hover:scale-110 transition-transform duration-300" />
+                <span>Explore Token</span>
+              </>
+            )}
+            
+            {/* Animated shine effect */}
+            {!isLoading && (
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+            )}
           </button>
         </div>
       );
     } else {
       // DISPLAY VIEW
       return (
-        <div>
-          <div className="flex flex-col items-center gap-6 sm:flex-row">
-            <img 
-              src={logo || 'assets/images/logo1.png'} 
-              alt="Token Logo" 
-              className="h-28 w-28 rounded-full border-2 border-gray-700 object-cover animate-float" // Animation added here
-            />
-            <div className="text-center sm:text-left">
-              <h2 className="text-3xl font-bold text-white">{tokenMetadata?.name}</h2>
-              <span className="text-lg font-semibold text-gray-400">{tokenMetadata?.symbol}</span>
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20">
+              <LuCheckCircle className="text-emerald-400" size={20} />
+              <span className="text-sm font-semibold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                METADATA FOUND
+              </span>
             </div>
+            
+            <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-emerald-200 to-cyan-300 bg-clip-text text-transparent">
+              Token Information
+            </h3>
           </div>
 
-          <div className="mt-8 space-y-4">
-            <div className="flex justify-between rounded-lg bg-gray-800/50 p-3">
-              <span className="font-semibold text-gray-400">Mint Address</span>
-              <span className="truncate font-mono text-sm text-gray-200">{tokenMetadata?.mint?.toString().substring(0, 16)}...</span>
-            </div>
-            <div className="flex justify-between items-center rounded-lg bg-gray-800/50 p-3">
-              <span className="font-semibold text-gray-400">Metadata URI</span>
-              <a href={tokenMetadata?.uri} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300">
-                View JSON <LuLink />
-              </a>
+          {/* Token Display Card */}
+          <div className="relative group">
+            <div className="rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/60 p-8 border border-slate-700/50 backdrop-blur-sm">
+              {/* Animated border */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 p-[1px]">
+                <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl"></div>
+              </div>
+
+              <div className="relative z-10">
+                {/* Token Header */}
+                <div className="flex flex-col items-center gap-6 sm:flex-row mb-8">
+                  <div className="relative">
+                    <img 
+                      src={logo || '/assets/images/logo1.png'} 
+                      alt="Token Logo" 
+                      className="h-24 w-24 rounded-2xl border-2 border-slate-600 object-cover shadow-lg group-hover:scale-105 transition-transform duration-300" 
+                    />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-cyan-500/20 to-purple-500/20"></div>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <h2 className="text-3xl font-bold text-white mb-2">{tokenMetadata?.name}</h2>
+                    <span className="text-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                      ${tokenMetadata?.symbol}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Metadata Details */}
+                <div className="space-y-4">
+                  {/* Mint Address */}
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-slate-400 flex items-center gap-2">
+                        <LuDatabase size={18} />
+                        Mint Address
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-sm text-slate-200 hidden sm:block">
+                          {tokenAddress}
+                        </span>
+                        <span className="font-mono text-sm text-slate-200 sm:hidden">
+                          {tokenAddress.substring(0, 8)}...{tokenAddress.substring(tokenAddress.length - 8)}
+                        </span>
+                        <button 
+                          onClick={() => handleCopy(tokenAddress)}
+                          className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                        >
+                          {copied ? <LuCheckCircle className="text-emerald-400" size={18} /> : <LuCopy size={18} />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metadata URI */}
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-slate-400 flex items-center gap-2">
+                        <LuFileText size={18} />
+                        Metadata URI
+                      </span>
+                      <div className="flex items-center gap-3">
+                        <a 
+                          href={tokenMetadata?.uri} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:border-cyan-400/50 transition-all duration-300"
+                        >
+                          <span className="text-sm font-medium">View JSON</span>
+                          <LuExternalLink size={16} />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional Info if available */}
+                  {tokenMetadata?.sellerFeeBasisPoints !== undefined && (
+                    <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-slate-400">Seller Fee</span>
+                        <span className="text-slate-200">{tokenMetadata.sellerFeeBasisPoints / 100}%</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           
+          {/* Action Button */}
           <button
             onClick={resetState}
-            className="group mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full border-2 border-gray-600 px-6 py-3 text-lg font-semibold text-gray-300 transition-all duration-300 hover:border-gray-500 hover:text-white"
+            className="group inline-flex w-full items-center justify-center gap-3 rounded-xl border-2 border-slate-600 px-8 py-4 text-lg font-semibold text-slate-300 transition-all duration-300 hover:border-slate-500 hover:text-white hover:bg-slate-800/50"
           >
-            <LuRefreshCw className="transition-transform group-hover:rotate-45" />
-            Search Again
+            <LuRefreshCw className="group-hover:rotate-180 transition-transform duration-500" />
+            Search Another Token
           </button>
         </div>
       );
@@ -148,19 +293,29 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md"
-      onClick={handleOutsideClick}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md overflow-y-auto p-4">
+      {/* Loading Overlay */}
       {isLoading && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center">
-          <ClipLoader color="#9333ea" size={50} />
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-slate-900/90 rounded-2xl p-8 border border-cyan-500/20 text-center">
+            <ClipLoader color="#06b6d4" size={50} />
+            <p className="mt-4 text-white font-medium">Fetching token metadata...</p>
+          </div>
         </div>
       )}
+
       <div
         ref={modalRef}
-        className="relative w-full max-w-lg rounded-2xl border border-gray-700/50 bg-gray-900/80 p-8 shadow-2xl shadow-purple-500/10"
+        className="relative w-full max-w-2xl rounded-3xl border border-slate-700/50 bg-gradient-to-br from-slate-900/95 to-slate-800/90 p-8 shadow-2xl shadow-cyan-500/10 backdrop-blur-xl"
       >
+        {/* Animated Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2rem_2rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] rounded-3xl"></div>
+        
+        {/* Glowing Background Elements */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-600/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/5 rounded-full blur-3xl"></div>
+
+        {/* Close Button */}
         <button
           onClick={() => setOpenTokenMetadata(false)}
           className="absolute top-4 right-4 rounded-full p-2 text-gray-500 transition-colors duration-300 hover:bg-gray-700 hover:text-white"
@@ -168,7 +323,11 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
         >
           <LuX size={24} />
         </button>
-        {renderContent()}
+
+        {/* Main Content */}
+        <div className="relative z-10">
+          {renderContent()}
+        </div>
       </div>
     </div>
   );
