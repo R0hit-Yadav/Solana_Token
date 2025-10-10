@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { LuCheckCircle, LuInfo, LuXCircle, LuX, LuExternalLink } from "react-icons/lu";
 import useNotificationStore from "stores/useNotificationStore";
 import { useNetworkConfiguration } from "contexts/NetworkConfigurationProvider";
@@ -22,8 +23,27 @@ const NotificationList = () => {
     }));
   };
 
-  return (
-    <div className="fixed top-4 right-4 z-50 flex w-full max-w-sm flex-col items-end gap-3">
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Create a portal container attached to document.body so notifications float above all other UI
+    const el = document.createElement("div");
+    el.setAttribute("id", "__notification_portal");
+    document.body.appendChild(el);
+    setPortalEl(el);
+    return () => {
+      try {
+        document.body.removeChild(el);
+      } catch (e) {
+        // ignore
+      }
+    };
+  }, []);
+
+  if (!portalEl) return null;
+
+  return createPortal(
+    <div className="fixed top-4 right-4 z-[99999] flex w-full max-w-sm flex-col items-end gap-3 pointer-events-none">
       {reversedNotifications.map((n) => (
         <Notification
           key={n.id}
@@ -34,7 +54,8 @@ const NotificationList = () => {
           onHide={() => handleHide(n.id)}
         />
       ))}
-    </div>
+    </div>,
+    portalEl
   );
 };
 
