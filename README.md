@@ -1,17 +1,16 @@
 # 🌟 SOLmate: Your Ultimate Solana Token Creation dApp
 
 <div align="center">
-  <img src="https://i.imgur.com/8DKwbY7.png" alt="SOLmate Logo" width="200"/>
+  <img src="./public/assets/images/sol1.png" alt="SOLmate Logo" width="200"/>
   
   [![Solana](https://img.shields.io/badge/Solana-black?style=for-the-badge&logo=solana)](https://solana.com/)
   [![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
 </div>
 
 Transform your token ideas into reality with SOLmate - the most intuitive and powerful token creation platform on Solana. Built with cutting-edge technology and designed for both beginners and experts.
 
-![SOLmate Dashboard](https://i.imgur.com/ZKEXOpy.png)
 
 ## ✨ Key Features
 
@@ -75,8 +74,6 @@ src/
 
 ## 🔄 Application Architecture
 
-### System Flow
-![System Architecture](https://i.imgur.com/YXwpHtB.png)
 
 ### Token Creation Flow
 ```mermaid
@@ -220,52 +217,13 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions and support, please reach out through:
 - GitHub Issues
 - Contact form on the website
-- Email: [your-email@example.com]
-
-## 🔮 Roadmap & Future Plans
-
-### Q4 2025
-- [ ] Multi-token creation suite
-- [ ] Advanced metadata management system
-- [ ] Token analytics dashboard
-- [ ] NFT integration capabilities
-- [ ] Enhanced security features
-
-### Q1 2026
-- [ ] Token launchpad platform
-- [ ] Automated market maker (AMM) integration
-- [ ] Cross-chain bridge functionality
-- [ ] Advanced tokenomics tools
-- [ ] Community governance features
-
-### Q2 2026
-- [ ] Token staking platform
-- [ ] DeFi protocol integration
-- [ ] Advanced trading features
-- [ ] Mobile application
-- [ ] Enterprise solutions
-
-## 💻 Development Updates
-
-Latest Version: v0.1.0
-Status: Active Development
-Next Release: November 2025
-
-### Recent Updates
-- 🚀 Added SPL token creation wizard
-- 🎨 Implemented new UI/UX design
-- 🔧 Enhanced error handling
-- 📱 Improved mobile responsiveness
-- 🔒 Security patches
-
----
+- Email: [rohitkyadav2312@gmail.com.com]
 
 <div align="center">
-  <img src="https://i.imgur.com/PVqwzkg.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol1.png" alt="SOLmate Footer" width="100%"/>
   
   Made with ❤️ by [R0hit-Yadav](https://github.com/R0hit-Yadav)
   
-  [Website](https://solmate.dev) · [Documentation](https://docs.solmate.dev) · [Twitter](https://twitter.com/solmate) · [Discord](https://discord.gg/solmate)
 </div>
 
 ---
