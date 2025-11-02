@@ -221,6 +221,11 @@ For questions and support, please reach out through:
 
 <div align="center">
   <img src="/public/assets/images/sol1.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol3.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol4.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol5.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol10.png" alt="SOLmate Footer" width="100%"/>
+  <img src="/public/assets/images/sol12.png" alt="SOLmate Footer" width="100%"/>
   
   Made with ❤️ by [R0hit-Yadav](https://github.com/R0hit-Yadav)
   
