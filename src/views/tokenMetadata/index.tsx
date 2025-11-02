@@ -193,10 +193,16 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
 
           {/* Token Display Card */}
           <div className="relative group">
-            <div className="rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/60 p-8 border border-slate-700/50 backdrop-blur-sm">
+            <div className="rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/60 p-6 sm:p-8 border border-slate-700/50 backdrop-blur-sm">
               {/* Animated border */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 p-[1px]">
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-emerald-500/20 p-[1px]">
                 <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl"></div>
+              </div>
+              
+              {/* Background Glow Effects */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute -top-24 -left-16 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl opacity-50"></div>
+                <div className="absolute -bottom-24 -right-16 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl opacity-50"></div>
               </div>
 
               <div className="relative z-10">
@@ -212,9 +218,14 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
                   </div>
                   <div className="text-center sm:text-left">
                     <h2 className="text-3xl font-bold text-white mb-2">{tokenMetadata?.name}</h2>
-                    <span className="text-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                      ${tokenMetadata?.symbol}
-                    </span>
+                    <div className="flex items-center justify-center sm:justify-start gap-2">
+                      <span className="text-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                        {tokenMetadata?.symbol}
+                      </span>
+                      <div className="px-2 py-1 rounded-lg bg-slate-800/50 border border-slate-700/30">
+                        <span className="text-sm text-slate-400">Token</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -222,21 +233,27 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
                 <div className="space-y-4">
                   {/* Mint Address */}
                   <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-slate-400 flex items-center gap-2">
-                        <LuDatabase size={18} />
-                        Mint Address
-                      </span>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-sm text-slate-200 hidden sm:block">
-                          {tokenAddress}
+                        <div className="p-2 rounded-lg bg-slate-800 border border-slate-700/30">
+                          <LuDatabase size={18} className="text-cyan-400" />
+                        </div>
+                        <span className="font-semibold text-slate-300">
+                          Mint Address
                         </span>
-                        <span className="font-mono text-sm text-slate-200 sm:hidden">
-                          {tokenAddress.substring(0, 8)}...{tokenAddress.substring(tokenAddress.length - 8)}
-                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 w-full sm:w-auto">
+                        <div className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700/30">
+                          <span className="font-mono text-sm text-slate-200 hidden sm:block">
+                            {tokenAddress}
+                          </span>
+                          <span className="font-mono text-sm text-slate-200 sm:hidden">
+                            {tokenAddress.substring(0, 8)}...{tokenAddress.substring(tokenAddress.length - 8)}
+                          </span>
+                        </div>
                         <button 
                           onClick={() => handleCopy(tokenAddress)}
-                          className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                          className="p-1.5 rounded-lg border border-slate-700/30 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-all duration-200"
                         >
                           {copied ? <LuCheckCircle className="text-emerald-400" size={18} /> : <LuCopy size={18} />}
                         </button>
@@ -246,19 +263,23 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
 
                   {/* Metadata URI */}
                   <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-slate-400 flex items-center gap-2">
-                        <LuFileText size={18} />
-                        Metadata URI
-                      </span>
-                      <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <div className="p-2 rounded-lg bg-slate-800 border border-slate-700/30">
+                          <LuFileText size={18} className="text-purple-400" />
+                        </div>
+                        <span className="font-semibold text-slate-300">
+                          Metadata URI
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 w-full sm:w-auto">
                         <a 
                           href={tokenMetadata?.uri} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:border-cyan-400/50 transition-all duration-300"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-500/20 hover:from-purple-500/30 hover:to-cyan-500/30 border border-purple-500/30 hover:border-purple-400/50 text-purple-400 hover:text-purple-300 transition-all duration-300"
                         >
-                          <span className="text-sm font-medium">View JSON</span>
+                          <span className="text-sm font-medium">View Metadata JSON</span>
                           <LuExternalLink size={16} />
                         </a>
                       </div>
@@ -269,8 +290,15 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
                   {tokenMetadata?.sellerFeeBasisPoints !== undefined && (
                     <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold text-slate-400">Seller Fee</span>
-                        <span className="text-slate-200">{tokenMetadata.sellerFeeBasisPoints / 100}%</span>
+                        <div className="flex items-center gap-2">
+                          <div className="p-2 rounded-lg bg-slate-800 border border-slate-700/30">
+                            <LuSparkles size={18} className="text-emerald-400" />
+                          </div>
+                          <span className="font-semibold text-slate-300">Creator Royalty</span>
+                        </div>
+                        <div className="px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700/30">
+                          <span className="text-emerald-400 font-semibold">{tokenMetadata.sellerFeeBasisPoints / 100}%</span>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -282,10 +310,12 @@ export const TokenMetadata: FC<TokenMetadataProps> = ({ setOpenTokenMetadata }) 
           {/* Action Button */}
           <button
             onClick={resetState}
-            className="group inline-flex w-full items-center justify-center gap-3 rounded-xl border-2 border-slate-600 px-8 py-4 text-lg font-semibold text-slate-300 transition-all duration-300 hover:border-slate-500 hover:text-white hover:bg-slate-800/50"
+            className="group relative inline-flex w-full items-center justify-center gap-3 rounded-xl px-8 py-4 text-lg font-semibold text-white transition-all duration-300 overflow-hidden bg-gradient-to-r from-purple-500/20 via-cyan-500/20 to-emerald-500/20 hover:from-purple-500/30 hover:via-cyan-500/30 hover:to-emerald-500/30 border border-purple-500/30 hover:border-purple-400/50"
           >
             <LuRefreshCw className="group-hover:rotate-180 transition-transform duration-500" />
             Search Another Token
+            {/* Animated shine effect */}
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
           </button>
         </div>
       );
